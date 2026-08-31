@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
+app.use(express.urlencoded({ extended: true })); // allows Express to understand normal HTML form submissions.
 
 const port = 8080;
 

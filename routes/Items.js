@@ -12,4 +12,16 @@ router.get("/", async (req, res) => {
 
 });
 
+router.get("/new", (req,res)=>{
+    res.render("items/new.ejs");
+});
+
+router.post("/",async (req, res) => {
+    const newItem = new Item(req.body);
+    
+    await newItem.save();
+
+    res.redirect("/items");
+})
+
 module.exports = router;
