@@ -24,4 +24,9 @@ router.post("/",async (req, res) => {
     res.redirect("/items");
 })
 
+router.get("/:id", async (req,res) => {
+    const item = await Item.findById(req.params.id);
+    res.render("items/show.ejs", {item});
+})
+
 module.exports = router;
