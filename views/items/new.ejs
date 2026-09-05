@@ -18,7 +18,11 @@
 
         <h1 class="mb-4">Report an Item</h1>
 
-        <form action="/items" method="POST">
+        <form
+            action="/items"
+            method="POST"
+            enctype="multipart/form-data"
+        >
 
             <div class="mb-3">
 
@@ -35,7 +39,7 @@
                 >
 
                 <% if (error) { %>
-                    <div class="text-success mt-2">
+                    <div class="text-danger mt-2">
                         <%= error %>
                     </div>
                 <% } %>
@@ -131,6 +135,22 @@
                     name="date"
                     class="form-control"
                     value="<%= formData ? formData.date : '' %>"
+                >
+
+            </div>
+
+            <div class="mb-3">
+
+                <label for="image" class="form-label">
+                    Image
+                </label>
+
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    class="form-control"
+                    accept="image/*"
                 >
 
             </div>

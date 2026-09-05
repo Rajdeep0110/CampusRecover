@@ -1,0 +1,286 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: #f8faff;
+    color: #172033;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Navbar */
+
+.navbar-custom {
+    height: 58px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.navbar-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    color: #172033;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.brand-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    background: #1769ff;
+    color: #fff !important;
+}
+
+.brand-icon i {
+    color: #fff;
+    font-size: 14px;
+}
+
+.brand > span:last-child {
+    color: #1769ff;
+}
+
+/* Navbar Search */
+
+.navbar-search {
+    width: 360px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    border: 1px solid #ddd;
+    border-radius: 22px;
+    background: #fff;
+}
+
+.navbar-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+}
+
+.navbar-search select {
+    height: 30px;
+    margin-right: 5px;
+    padding: 0 4px;
+    border: 0;
+    outline: 0;
+    background: #fff;
+    color: #53627a;
+    font-size: 11px;
+}
+
+.navbar-search button {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #1769ff;
+    color: #fff;
+}
+
+/* Navbar Buttons */
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-report,
+.login-btn {
+    color: #172033;
+    font-weight: 600;
+}
+
+.login-btn {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+}
+
+.signup-btn {
+    padding: 9px 17px;
+    border-radius: 9px;
+    background: #1769ff;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Categories */
+
+.category-bar {
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 38px;
+    overflow-x: auto;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.category-item {
+    min-width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: #687386;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.category-item i {
+    font-size: 19px;
+}
+
+.category-item:hover,
+.category-item.active {
+    color: #1769ff;
+}
+
+/* Footer */
+
+.site-footer {
+    margin-top: 4rem;
+    padding: 10px 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    color: #687386;
+}
+
+.footer-container {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-brand-top {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.footer-brand-icon {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: #1769ff;
+    color: #fff;
+    font-size: 12px;
+}
+
+.footer-brand strong {
+    color: #172033;
+    font-size: 13px;
+}
+
+.footer-brand strong span {
+    color: #1769ff;
+}
+
+.footer-brand small {
+    display: block;
+    margin-left: 31px;
+    font-size: 9px;
+}
+
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-social a {
+    color: #53627a;
+    font-size: 16px;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 18px;
+}
+
+.footer-links a,
+.footer-right > small {
+    color: #53627a;
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+.footer-divider {
+    width: 1px;
+    height: 25px;
+    background: #dce2eb;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .navbar-search {
+        display: none;
+    }
+
+    .nav-report {
+        display: none;
+    }
+
+    .brand {
+        font-size: 18px;
+    }
+
+    .brand-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 7px;
+    }
+
+    .category-bar {
+        justify-content: flex-start;
+        padding: 0 20px;
+        gap: 28px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .footer-brand small {
+        margin-left: 0;
+    }
+
+    .footer-right {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

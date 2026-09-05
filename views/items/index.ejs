@@ -1,81 +1,210 @@
-<!DOCTYPE html>
+<section class="items-page">
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="container">
 
-<title>Lost & Found Items</title>
+        <!-- Page Header -->
 
-<!-- Bootstrap CSS -->
-<link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
->
+        <div class="items-page-header">
 
-</head>
+            <div>
+                <span class="items-label">ITEMS ACROSS YOUR CAMPUS</span>
 
-<body>
+                <h1>
+                    Lost & Found <span>Items</span>
+                </h1>
 
-<div class="container mt-5">
-
-    <h1 class="mb-4">Lost & Found Items</h1>
-
-    <div class="row">
-
-        <% if (items.length === 0) { %>
-
-            <div class="alert alert-info">
-                No lost or found items have been reported yet.
+                <p>
+                    Browse reported lost and found items from your campus.
+                    Together, we can reunite them with their owners.
+                </p>
             </div>
 
-            <a href="/items/new" class="btn btn-primary">
-                Report an Item
-            </a>
+            <div class="items-header-icon">
+                <i class="bi bi-backpack-fill"></i>
+            </div>
 
-        <% } else { %>
+        </div>
 
-            <% for (let item of items) { %>
 
-                <div class="col-md-6 col-lg-4 mb-4">
+        <!-- Items Count -->
 
-                    <div class="card h-100">
+        <div class="items-toolbar">
 
-                        <div class="card-body">
+            <strong>
+                <%= items.length %>
+                <%= items.length === 1 ? "item" : "items" %>
+                found
+            </strong>
 
-                            <h5 class="card-title">
-                                <%= item.title %>
-                            </h5>
+        </div>
 
-                            <p class="card-text">
-                                <%= item.description %>
-                            </p>
 
-                            <p class="mb-1">
-                                <strong>Category:</strong>
-                                <%= item.category %>
-                            </p>
+        <!-- Items -->
 
-                            <p class="mb-1">
-                                <strong>Type:</strong>
-                                <%= item.type %>
-                            </p>
+        <div class="row g-3">
 
-                            <p class="mb-1">
-                                <strong>Location:</strong>
-                                <%= item.location %>
-                            </p>
+            <% if (items && items.length > 0) { %>
 
-                            <p class="mb-0">
-                                <strong>Date:</strong>
-                                <%= item.date.toDateString() %>
-                            </p>
+                <% items.forEach(item => { %>
 
-                            <a href="/items/<%= item._id %>" class="btn btn-primary mt-3">
-                                View Details
-                            </a>
+                    <% const category = item.category.trim().toLowerCase(); %>
+
+                    <div class="col-12 col-sm-6 col-lg-3">
+
+                        <div class="item-card">
+
+                            <!-- Image -->
+
+                            <div class="item-top">
+
+                                <% if (item.image) { %>
+
+                                    <img
+                                        src="<%= item.image %>"
+                                        alt="<%= item.title %>"
+                                    >
+
+                                <% } else if (category === "bag") { %>
+
+                                    <img
+                                        src="/images/backpack.jpg"
+                                        alt="Backpack"
+                                    >
+
+                                <% } else if (category === "books") { %>
+
+                                    <img
+                                        src="/images/notebook.jpg"
+                                        alt="Notebook"
+                                    >
+
+                                <% } else if (category === "wallet") { %>
+
+                                    <img
+                                        src="/images/wallet.jpg"
+                                        alt="Wallet"
+                                    >
+
+                                <% } else { %>
+
+                                    <i class="bi bi-box item-icon"></i>
+
+                                <% } %>
+
+
+                                <!-- Status -->
+
+                                <% if (item.type === "Lost") { %>
+
+                                    <span class="status-badge lost-badge">
+                                        Lost
+                                    </span>
+
+                                <% } else { %>
+
+                                    <span class="status-badge found-badge">
+                                        Found
+                                    </span>
+
+                                <% } %>
+
+                            </div>
+
+
+                            <!-- Content -->
+
+                            <div class="item-content">
+
+                                <div class="item-category">
+
+                                    <% if (category === "bag") { %>
+
+                                        <i class="bi bi-backpack-fill"></i>
+
+                                    <% } else if (category === "books") { %>
+
+                                        <i class="bi bi-book-fill"></i>
+
+                                    <% } else if (category === "wallet") { %>
+
+                                        <i class="bi bi-wallet-fill"></i>
+
+                                    <% } else { %>
+
+                                        <i class="bi bi-box"></i>
+
+                                    <% } %>
+
+                                    <span>
+                                        <%= item.category %>
+                                    </span>
+
+                                </div>
+
+
+                                <h3 class="item-title">
+                                    <%= item.title %>
+                                </h3>
+
+
+                                <p class="item-description">
+                                    <%= item.description %>
+                                </p>
+
+
+                                <div class="item-info">
+
+                                    <span>
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                        <%= item.location %>
+                                    </span>
+
+                                    <span>
+                                        <i class="bi bi-calendar3"></i>
+                                        <%= new Date(item.date).toDateString() %>
+                                    </span>
+
+                                </div>
+
+
+                                <a
+                                    href="/items/<%= item._id %>"
+                                    class="details-btn"
+                                >
+                                    View Details
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                            </div>
 
                         </div>
+
+                    </div>
+
+                <% }) %>
+
+            <% } else { %>
+
+                <div class="col-12">
+
+                    <div class="empty-state">
+
+                        <i class="bi bi-inbox empty-icon"></i>
+
+                        <h3>
+                            No items found
+                        </h3>
+
+                        <p>
+                            Try another search or report a new item.
+                        </p>
+
+                        <a
+                            href="/items/new"
+                            class="btn btn-primary"
+                        >
+                            Report an Item
+                        </a>
 
                     </div>
 
@@ -83,11 +212,8 @@
 
             <% } %>
 
-        <% } %>
+        </div>
 
     </div>
 
-</div>
-
-</body>
-</html>
+</section>

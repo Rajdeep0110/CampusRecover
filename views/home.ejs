@@ -1,12 +1,302 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8";>
-        <meta name="viewport" content="width=device-width, intial-scale=1.0">
-        <title>CampusRecover</title>
-    </head>
-    <body>
-        <h1>Welcome to CampusRecover</h1>
-        <p>A safer way to report and recover lost belongings on campus.</p>
-    </body>
-</html>
+<!-- HERO -->
+
+<section class="hero">
+    <div class="container hero-container">
+
+        <div class="hero-content">
+
+            <div class="hero-label">FOR A KINDER, SAFER CAMPUS</div>
+
+            <h1>
+                Lost something?
+                <br>
+                <span>Let's find it together.</span>
+            </h1>
+
+            <p class="hero-description">
+                Search, report, and help fellow students recover
+                lost and found items across your campus.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/items/new" class="hero-report-btn">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Report an Item</span>
+                </a>
+
+                <a href="#how-it-works" class="hero-how-btn">
+                    <i class="bi bi-play-circle"></i>
+                    <span>How It Works</span>
+                </a>
+            </div>
+
+            <div class="hero-features">
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div class="feature-text">
+                        <strong>Student Community</strong>
+                        <span>Helping each other</span>
+                    </div>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-fill"></i>
+                    </div>
+                    <div class="feature-text">
+                        <strong>Safer Campus</strong>
+                        <span>Belongings back where they belong</span>
+                    </div>
+                </div>
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                    <div class="feature-text">
+                        <strong>Make a Difference</strong>
+                        <span>Small actions, big reunions</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img
+                src="/images/hero-campus.jpg"
+                alt="Blue backpack on a university campus"
+            >
+        </div>
+
+    </div>
+</section>
+
+
+<!-- RECENT ITEMS -->
+
+<section class="recent-items">
+    <div class="container">
+
+        <div class="items-header">
+            <div>
+                <h2>Recently Reported Items</h2>
+                <p>Browse the latest lost and found items from your campus.</p>
+            </div>
+
+            <a href="/items" class="view-all">
+                View All Items
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+
+            <% if (items && items.length > 0) { %>
+
+                <% items.forEach(item => { %>
+                    <% const category = item.category.trim().toLowerCase(); %>
+
+                    <div class="col-md-4">
+                        <div class="home-item-card">
+
+                            <div class="home-item-image">
+
+                                <% if (item.image) { %>
+
+                                    <img
+                                        src="<%= item.image %>"
+                                        alt="<%= item.title %>"
+                                    >
+
+                                <% } else if (category === "bag") { %>
+
+                                    <img
+                                        src="/images/backpack.jpg"
+                                        alt="Backpack"
+                                    >
+
+                                <% } else if (category === "books") { %>
+
+                                    <img
+                                        src="/images/notebook.jpg"
+                                        alt="Notebook"
+                                    >
+
+                                <% } else if (category === "wallet") { %>
+
+                                    <img
+                                        src="/images/wallet.jpg"
+                                        alt="Wallet"
+                                    >
+
+                                <% } else { %>
+
+                                    <div class="home-item-placeholder">
+                                        <i class="bi bi-box"></i>
+                                    </div>
+
+                                <% } %>
+
+                                <span class="home-status <%= item.type === 'Lost' ? 'lost' : 'found' %>">
+                                    <%= item.type === "Lost" ? "Lost" : "Found" %>
+                                </span>
+
+                            </div>
+
+                            <div class="home-item-content">
+
+                                <div class="home-item-category">
+
+                                    <% if (category === "bag") { %>
+                                        <i class="bi bi-backpack-fill"></i>
+                                    <% } else if (category === "books") { %>
+                                        <i class="bi bi-book-fill"></i>
+                                    <% } else if (category === "wallet") { %>
+                                        <i class="bi bi-wallet-fill"></i>
+                                    <% } else { %>
+                                        <i class="bi bi-box"></i>
+                                    <% } %>
+
+                                    <span><%= item.category %></span>
+
+                                </div>
+
+                                <h3><%= item.title %></h3>
+
+                                <p class="home-item-description">
+                                    <%= item.description %>
+                                </p>
+
+                                <div class="home-item-info">
+                                    <span>
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                        <%= item.location %>
+                                    </span>
+
+                                    <span>
+                                        <i class="bi bi-calendar3"></i>
+                                        <%= new Date(item.date).toDateString() %>
+                                    </span>
+                                </div>
+
+                                <a
+                                    href="/items/<%= item._id %>"
+                                    class="home-details-btn"
+                                >
+                                    <span>View Details</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                <% }) %>
+
+            <% } else { %>
+
+                <div class="col-12">
+                    <div class="home-empty">
+
+                        <i class="bi bi-inbox"></i>
+
+                        <h3>No items reported yet</h3>
+
+                        <p>
+                            Be the first student to report a lost or found item.
+                        </p>
+
+                        <a href="/items/new" class="hero-report-btn">
+                            Report an Item
+                        </a>
+
+                    </div>
+                </div>
+
+            <% } %>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+
+        <div class="how-it-works-header">
+
+            <span class="items-label">
+                HOW IT WORKS
+            </span>
+
+            <h2>
+                Find it. Report it. <span>Recover it.</span>
+            </h2>
+
+            <p>
+                CampusRecover makes it simple to report and find lost and found items.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="how-step">
+
+                    <div class="how-icon">
+                        <i class="bi bi-plus-circle"></i>
+                    </div>
+
+                    <h3>Report an Item</h3>
+
+                    <p>
+                        Add the details of a lost or found item and upload an image.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="how-step">
+
+                    <div class="how-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <h3>Search Items</h3>
+
+                    <p>
+                        Browse reported items or use search and status filters to find an item.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="how-step">
+
+                    <div class="how-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+
+                    <h3>Recover It</h3>
+
+                    <p>
+                        View the item details and take the next step toward recovering it.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

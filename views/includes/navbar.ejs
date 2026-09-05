@@ -1,0 +1,102 @@
+<nav class="navbar-custom">
+    <div class="container">
+        <div class="navbar-inner">
+
+            <a href="/items" class="brand">
+                <span class="brand-icon">
+                    <i class="bi bi-backpack-fill"></i>
+                </span>
+                Campus<span>Recover</span>
+            </a>
+
+            <form action="/items" method="GET" class="navbar-search">
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search items"
+                >
+
+                <select name="type">
+                    <option value="">All Status</option>
+                    <option value="Lost">Lost</option>
+                    <option value="Found">Found</option>
+                </select>
+
+                <button type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+
+            </form>
+
+            <div class="navbar-actions">
+
+                <a href="/items/new" class="nav-report">
+                    Report Item
+                </a>
+
+                <a href="#" class="login-btn">
+                    Log In
+                </a>
+
+                <a href="#" class="signup-btn">
+                    Sign Up
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+
+<!-- Category Bar -->
+
+<div class="category-bar">
+
+    <a href="/items" class="category-item active">
+        <i class="bi bi-grid-fill"></i>
+        <span>All</span>
+    </a>
+
+    <a href="/items?search=Electronics" class="category-item">
+        <i class="bi bi-laptop"></i>
+        <span>Electronics</span>
+    </a>
+
+    <a href="/items?search=Books" class="category-item">
+        <i class="bi bi-book-fill"></i>
+        <span>Books</span>
+    </a>
+
+    <a href="/items?search=Bag" class="category-item">
+        <i class="bi bi-backpack-fill"></i>
+        <span>Bags</span>
+    </a>
+
+    <a href="/items?search=Wallet" class="category-item">
+        <i class="bi bi-wallet-fill"></i>
+        <span>Wallets</span>
+    </a>
+
+    <a href="/items?search=ID Card" class="category-item">
+        <i class="bi bi-person-vcard-fill"></i>
+        <span>ID Cards</span>
+    </a>
+
+    <a href="/items?search=Accessories" class="category-item">
+        <i class="bi bi-watch"></i>
+        <span>Accessories</span>
+    </a>
+
+    <a href="/items?search=Clothing" class="category-item">
+        <i class="bi bi-person-standing"></i>
+        <span>Clothing</span>
+    </a>
+
+    <a href="/items" class="category-item">
+        <i class="bi bi-three-dots"></i>
+        <span>Others</span>
+    </a>
+
+</div>
