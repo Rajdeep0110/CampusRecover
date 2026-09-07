@@ -1,12 +1,17 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
+const User = require("../models/User");
 
 const router = express.Router();
 
 // Signup page
 router.get("/signup", (req, res) => {
     res.render("auth/signup", { page: "signup" });
+});
+
+// Login page
+router.get("/login", (req, res) => {
+    res.render("auth/login", { page: "login" });
 });
 
 // Handle signup

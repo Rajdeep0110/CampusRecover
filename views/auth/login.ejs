@@ -1,0 +1,48 @@
+<div class="auth-page">
+
+    <div class="auth-container">
+
+        <h1>Log In to CampusRecover</h1>
+
+        <form action="/login" method="POST" class="auth-form">
+
+            <div class="auth-field">
+                <label for="email">Email</label>
+
+                <div class="auth-input">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="password">Password</label>
+
+                <div class="auth-input">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                    >
+                </div>
+            </div>
+
+            <button type="submit" class="auth-submit">
+                Log In
+            </button>
+
+        </form>
+
+        <p class="auth-switch">
+            Don't have an account?
+            <a href="/signup">Sign Up</a>
+        </p>
+
+    </div>
+
+</div>
