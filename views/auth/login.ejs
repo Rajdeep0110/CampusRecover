@@ -1,47 +1,127 @@
-<div class="auth-page">
+<div class="login-page">
 
-    <div class="auth-container">
+    <div class="login-container">
 
-        <h1>Log In to CampusRecover</h1>
+        <div class="login-content">
 
-        <form action="/login" method="POST" class="auth-form">
+            <p class="login-eyebrow">
+                WELCOME BACK TO OUR COMMUNITY
+            </p>
 
-            <div class="auth-field">
-                <label for="email">Email</label>
+            <h1>
+                Welcome Back<br>
+                <span>Let's Recover Together</span>
+            </h1>
 
-                <div class="auth-input">
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                    >
+            <p class="login-description">
+                Log in to report lost items, search found belongings, and help
+                fellow students reconnect with what matters.
+            </p>
+
+            <form action="/login" method="POST" class="login-form">
+
+                <div class="login-field">
+
+                    <label for="email">Email</label>
+
+                    <div class="login-input">
+                        <i class="bi bi-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+
                 </div>
+
+                <div class="login-field">
+
+                    <label for="password">Password</label>
+
+                    <div class="login-input">
+                        <i class="bi bi-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <i class="bi bi-eye"></i>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="login-submit">
+                    Log In <span>→</span>
+                </button>
+
+            </form>
+
+            <p class="login-signup">
+                Don't have an account?
+                <a href="/signup">Sign Up</a>
+            </p>
+
+        </div>
+
+
+        <div class="login-visual">
+
+            <div class="login-image">
+                <img
+                    src="/images/hero-campus.jpg"
+                    alt="CampusRecover campus"
+                >
             </div>
 
-            <div class="auth-field">
-                <label for="password">Password</label>
+            <div class="login-benefits">
 
-                <div class="auth-input">
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                    >
+                <div class="login-benefit">
+
+                    <div class="login-benefit-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <h3>Find What Matters</h3>
+
+                    <p>Search reported items</p>
+
                 </div>
+
+                <div class="login-benefit">
+
+                    <div class="login-benefit-icon safer">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <h3>Safer Campus</h3>
+
+                    <p>Helping belongings return home</p>
+
+                </div>
+
+                <div class="login-benefit">
+
+                    <div class="login-benefit-icon heart">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+
+                    <h3>Make a Difference</h3>
+
+                    <p>Small actions, big impact</p>
+
+                </div>
+
             </div>
 
-            <button type="submit" class="auth-submit">
-                Log In
-            </button>
-
-        </form>
-
-        <p class="auth-switch">
-            Don't have an account?
-            <a href="/signup">Sign Up</a>
-        </p>
+        </div>
 
     </div>
 
