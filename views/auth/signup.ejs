@@ -1,44 +1,131 @@
-<div class="container">
-    <h1>Create an Account</h1>
+<div class="signup-page">
 
-    <form action="/signup" method="POST">
+    <div class="signup-container">
 
-        <div>
-            <label for="name">Name</label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                required
-            >
+        <div class="signup-content">
+
+            <div class="signup-heading">
+                <p class="signup-eyebrow">JOIN OUR STUDENT COMMUNITY</p>
+
+                <h1>
+                    Create Your Account<br>
+                    <span>Start Making a Safer Campus</span>
+                </h1>
+
+                <p class="signup-description">
+                    Sign up to report, search, and help fellow students recover lost and found
+                    items across your campus.
+                </p>
+            </div>
+
+            <form action="/signup" method="POST" class="signup-form">
+
+                <div class="signup-field">
+                    <label for="name">Username</label>
+
+                    <div class="signup-input">
+                        <i class="bi bi-person"></i>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your username"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="signup-field">
+                    <label for="email">Email</label>
+
+                    <div class="signup-input">
+                        <i class="bi bi-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="signup-field">
+                    <label for="password">Password</label>
+
+                    <div class="signup-input">
+                        <i class="bi bi-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                        <i class="bi bi-eye"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="signup-submit">
+                    Sign Up <span>→</span>
+                </button>
+
+            </form>
+
+            <p class="signup-login">
+                Already have an account?
+                <a href="/login">Log In</a>
+            </p>
+
         </div>
 
-        <div>
-            <label for="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                required
-            >
+
+        <div class="signup-visual">
+
+            <div class="signup-image">
+                <img
+                    src="/images/hero-campus.jpg"
+                    alt="CampusRecover"
+                >
+            </div>
+
+            <div class="signup-benefits">
+
+                <div class="signup-benefit">
+                    <div class="benefit-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <h3>Student Community</h3>
+                    <p>Helping each other</p>
+                </div>
+
+                <div class="signup-benefit">
+                    <div class="benefit-icon">
+                        <i class="bi bi-shield-fill"></i>
+                    </div>
+
+                    <h3>Safer Campus</h3>
+                    <p>Belonging starts here</p>
+                </div>
+
+                <div class="signup-benefit">
+                    <div class="benefit-icon heart">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+
+                    <h3>Make a Difference</h3>
+                    <p>Small actions, big impact</p>
+                </div>
+
+            </div>
+
         </div>
 
-        <div>
-            <label for="password">Password</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                required
-            >
-        </div>
+    </div>
 
-        <button type="submit">Sign Up</button>
-
-    </form>
-
-    <p>
-        Already have an account?
-        <a href="/login">Login</a>
-    </p>
 </div>
