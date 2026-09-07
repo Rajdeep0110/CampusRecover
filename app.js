@@ -25,9 +25,11 @@ mongoose.connect(process.env.MONGO_URL)
 // Routers
 const homeRouter = require("./routes/home");
 const itemsRouter = require("./routes/items");
+const authRouter = require("./routes/auth");
 
 app.use("/", homeRouter);
 app.use("/items", itemsRouter);
+app.use("/", authRouter);
 
 // Server
 app.listen(port, () => {
