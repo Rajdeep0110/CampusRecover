@@ -9,11 +9,6 @@ router.get("/signup", (req, res) => {
     res.render("auth/signup", { page: "signup" });
 });
 
-// Login page
-router.get("/login", (req, res) => {
-    res.render("auth/login", { page: "login" });
-});
-
 // Handle signup
 router.post("/signup", async (req, res) => {
     try {
@@ -44,6 +39,16 @@ router.post("/signup", async (req, res) => {
         console.error(error);
         res.status(500).send("Something went wrong.");
     }
+});
+
+// Login page
+router.get("/login", (req, res) => {
+    res.render("auth/login", { page: "login" });
+});
+
+// Forgot password page
+router.get("/forgot-password", (req, res) => {
+    res.render("auth/forgot-password", { page: "forgot-password" });
 });
 
 module.exports = router;

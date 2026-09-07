@@ -30,18 +30,22 @@
         <link rel="stylesheet" href="/css/show.css">
     <% } %>
 
-    <% if (page === "signup" || page === "login") { %>
+    <% if (page === "signup" || page === "login" || page === "forgot-password") { %>
         <link rel="stylesheet" href="/css/auth.css">
     <% } %>
 </head>
 
 <body>
 
-    <%- include("../includes/navbar") %>
+    <% if (page !== "forgot-password") { %>
+        <%- include("../includes/navbar") %>
+    <% } %>
 
     <%- body %>
 
-    <%- include("../includes/footer") %>
+    <% if (page !== "forgot-password") { %>
+        <%- include("../includes/footer") %>
+    <% } %>
 
 </body>
 </html>
