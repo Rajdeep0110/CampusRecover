@@ -30,20 +30,32 @@
         <link rel="stylesheet" href="/css/show.css">
     <% } %>
 
-    <% if (page === "signup" || page === "login" || page === "forgot-password") { %>
-        <link rel="stylesheet" href="/css/auth.css">
+    <% if (page === "signup") { %>
+        <link rel="stylesheet" href="/css/signup.css">
+    <% } %>
+
+    <% if (page === "login") { %>
+        <link rel="stylesheet" href="/css/login.css">
+    <% } %>
+
+    <% if (page === "forgot-password") { %>
+        <link rel="stylesheet" href="/css/forgot-password.css">
+    <% } %>
+
+    <% if (page === "reset-password") { %>
+        <link rel="stylesheet" href="/css/reset-password.css">
     <% } %>
 </head>
 
 <body>
 
-    <% if (page !== "forgot-password") { %>
+    <% if (page !== "forgot-password" && page !== "reset-password") { %>
         <%- include("../includes/navbar") %>
     <% } %>
 
     <%- body %>
 
-    <% if (page !== "forgot-password") { %>
+    <% if (page !== "forgot-password" && page !== "reset-password") { %>
         <%- include("../includes/footer") %>
     <% } %>
 
