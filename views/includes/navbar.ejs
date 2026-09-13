@@ -35,13 +35,25 @@
                     Report Item
                 </a>
 
-                <a href="/login" class="login-btn">
-                    Log In
-                </a>
+                <% if (currUser) { %>
 
-                <a href="/signup" class="signup-btn">
-                    Sign Up
-                </a>
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="login-btn">
+                            Log Out
+                        </button>
+                    </form>
+
+                <% } else { %>
+
+                    <a href="/login" class="login-btn">
+                        Log In
+                    </a>
+
+                    <a href="/signup" class="signup-btn">
+                        Sign Up
+                    </a>
+
+                <% } %>
 
             </div>
 

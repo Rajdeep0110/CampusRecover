@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const expressLayouts = require("express-ejs-layouts");
+const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 
 const app = express();
 const port = 8080;
@@ -10,6 +12,22 @@ const port = 8080;
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URL
+        })
+    })
+);
+
+app.use((req, res, next) => {
+    res.locals.currUser = req.session.user;
+    next();
+});
 
 // EJS
 app.set("view engine", "ejs");

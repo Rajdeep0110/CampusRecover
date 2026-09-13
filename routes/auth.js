@@ -74,12 +74,21 @@ router.post("/login", async (req, res) => {
             return res.send("Invalid email or password.");
         }
 
+        req.session.user = user;
+
         res.redirect("/items");
 
     } catch (error) {
         console.error(error);
         res.status(500).send("Something went wrong.");
     }
+});
+
+// Logout
+router.post("/logout", (req, res) => {
+    req.session.destroy(() => {
+        res.redirect("/items");
+    });
 });
 
 // Forgot password page
