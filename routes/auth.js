@@ -65,13 +65,19 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.send("Invalid email or password.");
+            return res.render("auth/login", {
+                page: "login",
+                error: "Invalid email or password."
+            });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.send("Invalid email or password.");
+            return res.render("auth/login", {
+                page: "login",
+                error: "Invalid email or password."
+            });
         }
 
         req.session.user = user;
