@@ -25,13 +25,19 @@
 
         <div class="edit-card">
 
-            <form action="/items/<%= item._id %>/update" method="POST">
+            <% if (error) { %>
+                <div class="edit-error mb-4">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <form action="/items/<%= item._id %>/update" method="POST" enctype="multipart/form-data">
 
                 <!-- Item Title -->
                 <div class="mb-3">
-
                     <label for="title" class="form-label">
-                        Item Title
+                        Item Title <span class="text-danger">*</span>
                     </label>
 
                     <input
@@ -40,16 +46,15 @@
                         name="title"
                         class="form-control"
                         value="<%= formData && formData.title !== undefined ? formData.title : item.title %>"
+                        required
                     >
-
                 </div>
 
 
                 <!-- Description -->
                 <div class="mb-3">
-
                     <label for="description" class="form-label">
-                        Description
+                        Description <span class="text-danger">*</span>
                     </label>
 
                     <textarea
@@ -57,123 +62,150 @@
                         name="description"
                         class="form-control"
                         rows="4"
+                        required
                     ><%= formData && formData.description !== undefined ? formData.description : item.description %></textarea>
-
                 </div>
 
 
-                <!-- Category -->
-                <div class="mb-3">
+                <!-- Grid Row: Category & Status -->
+                <div class="row">
 
-                    <label for="category" class="form-label">
-                        Category
-                    </label>
+                    <div class="col-md-6 mb-3">
+                        <label for="category" class="form-label">
+                            Category <span class="text-danger">*</span>
+                        </label>
 
-                    <input
-                        type="text"
-                        id="category"
-                        name="category"
-                        class="form-control"
-                        value="<%= formData && formData.category !== undefined ? formData.category : item.category %>"
-                    >
+                        <% const currentCategory = formData && formData.category !== undefined ? formData.category : item.category; %>
 
-                </div>
-
-
-                <!-- Type -->
-                <div class="mb-3">
-
-                    <label for="type" class="form-label">
-                        Status
-                    </label>
-
-                    <select
-                        id="type"
-                        name="type"
-                        class="form-select"
-                    >
-
-                        <option
-                            value="Lost"
-                            <%= (formData && formData.type !== undefined ? formData.type : item.type) === "Lost" ? "selected" : "" %>
+                        <select
+                            id="category"
+                            name="category"
+                            class="form-select"
+                            required
                         >
-                            Lost
-                        </option>
-
-                        <option
-                            value="Found"
-                            <%= (formData && formData.type !== undefined ? formData.type : item.type) === "Found" ? "selected" : "" %>
-                        >
-                            Found
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- Location -->
-                <div class="mb-3">
-
-                    <label for="location" class="form-label">
-                        Location
-                    </label>
-
-                    <input
-                        type="text"
-                        id="location"
-                        name="location"
-                        class="form-control"
-                        value="<%= formData && formData.location !== undefined ? formData.location : item.location %>"
-                    >
-
-                </div>
-
-
-                <!-- Date -->
-                <div class="mb-3">
-
-                    <label for="date" class="form-label">
-                        Date
-                    </label>
-
-                    <input
-                        type="date"
-                        id="date"
-                        name="date"
-                        class="form-control"
-                        value="<%= formData && formData.date !== undefined ? formData.date : item.date.toISOString().split('T')[0] %>"
-                    >
-
-                </div>
-
-
-                <% if (error) { %>
-
-                    <div class="edit-error">
-                        <i class="bi bi-exclamation-circle"></i>
-                        <%= error %>
+                            <option value="Electronics" <%= currentCategory === "Electronics" ? "selected" : "" %>>Electronics (Phone, Laptop, Headphones)</option>
+                            <option value="Bag" <%= currentCategory === "Bag" ? "selected" : "" %>>Bag / Backpack</option>
+                            <option value="Books" <%= currentCategory === "Books" ? "selected" : "" %>>Books / Notebooks</option>
+                            <option value="Wallet" <%= currentCategory === "Wallet" ? "selected" : "" %>>Wallet / ID Card</option>
+                            <option value="Keys" <%= currentCategory === "Keys" ? "selected" : "" %>>Keys</option>
+                            <option value="Clothing" <%= currentCategory === "Clothing" ? "selected" : "" %>>Clothing / Accessories</option>
+                            <option value="Bottle" <%= currentCategory === "Bottle" ? "selected" : "" %>>Water Bottle</option>
+                            <option value="Other" <%= currentCategory === "Other" || !["Electronics","Bag","Books","Wallet","Keys","Clothing","Bottle"].includes(currentCategory) ? "selected" : "" %>>Other</option>
+                        </select>
                     </div>
 
-                <% } %>
+                    <div class="col-md-6 mb-3">
+                        <label for="type" class="form-label">
+                            Status <span class="text-danger">*</span>
+                        </label>
+
+                        <select
+                            id="type"
+                            name="type"
+                            class="form-select"
+                            required
+                        >
+                            <option
+                                value="Lost"
+                                <%= (formData && formData.type !== undefined ? formData.type : item.type) === "Lost" ? "selected" : "" %>
+                            >
+                                Lost
+                            </option>
+
+                            <option
+                                value="Found"
+                                <%= (formData && formData.type !== undefined ? formData.type : item.type) === "Found" ? "selected" : "" %>
+                            >
+                                Found
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <!-- Grid Row: Location & Date -->
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="location" class="form-label">
+                            Location <span class="text-danger">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            class="form-control"
+                            value="<%= formData && formData.location !== undefined ? formData.location : item.location %>"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="date" class="form-label">
+                            Date <span class="text-danger">*</span>
+                        </label>
+
+                        <% 
+                            let formattedDate = "";
+                            if (formData && formData.date !== undefined) {
+                                formattedDate = formData.date;
+                            } else if (item.date) {
+                                formattedDate = new Date(item.date).toISOString().split('T')[0];
+                            }
+                        %>
+
+                        <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            class="form-control"
+                            value="<%= formattedDate %>"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <!-- Image Update -->
+                <div class="mb-4">
+                    <label for="image" class="form-label">
+                        Update Image <span class="text-muted">(Leave empty to keep existing image)</span>
+                    </label>
+
+                    <% if (item.image) { %>
+                        <div class="mb-2">
+                            <small class="text-muted d-block mb-1">Current Image:</small>
+                            <img src="<%= item.image %>" alt="Current item image" style="max-height: 100px; border-radius: 8px; border: 1px solid #ddd;">
+                        </div>
+                    <% } %>
+
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="form-control"
+                        accept="image/*"
+                    >
+                </div>
 
 
                 <!-- Buttons -->
                 <div class="edit-actions">
-
                     <button type="submit" class="update-btn">
-                        <i class="bi bi-check2-circle"></i>
+                        <i class="bi bi-check2-circle me-1"></i>
                         Update Item
                     </button>
 
                     <a
                         href="/items/<%= item._id %>"
-                        class="back-details-btn"
+                        class="back-details-btn ms-2"
                     >
-                        <i class="bi bi-arrow-left"></i>
+                        <i class="bi bi-arrow-left me-1"></i>
                         Back to Details
                     </a>
-
                 </div>
 
             </form>

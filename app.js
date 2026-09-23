@@ -49,6 +49,7 @@ app.use("/", homeRouter);
 app.use("/items", itemsRouter);
 app.use("/", authRouter);
 
+
 // Server
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
