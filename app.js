@@ -13,6 +13,7 @@ const port = 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// Session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -20,10 +21,15 @@ app.use(
         saveUninitialized: false,
         store: MongoStore.create({
             mongoUrl: process.env.MONGO_URL
-        })
+        }),
+        cookie: {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true
+        }
     })
 );
 
+// Current User
 app.use((req, res, next) => {
     res.locals.currUser = req.session.user;
     next();
@@ -36,9 +42,10 @@ app.use(expressLayouts);
 app.set("layout", "layouts/boilerplate");
 
 // MongoDB
-mongoose.connect(process.env.MONGO_URL)
+mongoose
+    .connect(process.env.MONGO_URL)
     .then(() => console.log("Connected to MongoDB"))
-    .catch(err => console.log("MongoDB connection error:", err));
+    .catch((err) => console.log("MongoDB connection error:", err));
 
 // Routers
 const homeRouter = require("./routes/home");
@@ -48,7 +55,6 @@ const authRouter = require("./routes/auth");
 app.use("/", homeRouter);
 app.use("/items", itemsRouter);
 app.use("/", authRouter);
-
 
 // Server
 app.listen(port, () => {
