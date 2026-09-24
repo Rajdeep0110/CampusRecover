@@ -82,7 +82,7 @@ router.post("/login", async (req, res) => {
 
         req.session.user = user;
 
-        res.redirect("/items");
+        res.redirect("/");
 
     } catch (error) {
         console.error(error);
@@ -126,8 +126,11 @@ router.post("/forgot-password", async (req, res) => {
 
         await user.save();
 
+        const baseUrl =
+            process.env.BASE_URL || "http://localhost:8080";
+
         const resetLink =
-            `http://localhost:8080/reset-password/${resetToken}`;
+            `${baseUrl}/reset-password/${resetToken}`;
 
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
