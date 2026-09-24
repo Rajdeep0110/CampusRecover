@@ -7,20 +7,24 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+if (!process.env.MONGO_URL) {
+    console.error("⚠️ WARNING: MONGO_URL environment variable is not defined! Set MONGO_URL in Render Dashboard Environment settings.");
+}
+
 // Session
 app.use(
     session({
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET || "default_fallback_secret",
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({
-            mongoUrl: process.env.MONGO_URL
+            mongoUrl: process.env.MONGO_URL || "mongodb://127.0.0.1:27017/campusRecover"
         }),
         cookie: {
             maxAge: 7 * 24 * 60 * 60 * 1000,
