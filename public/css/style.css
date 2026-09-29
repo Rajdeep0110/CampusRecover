@@ -99,6 +99,10 @@ a {
 
 /* Navbar Buttons */
 
+.mobile-nav-toggle {
+    display: none;
+}
+
 .navbar-actions {
     display: flex;
     align-items: center;
@@ -245,6 +249,58 @@ a {
 /* Mobile */
 
 @media (max-width: 768px) {
+    .navbar-custom {
+        position: relative;
+    }
+
+    .mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #172033;
+        cursor: pointer;
+        padding: 4px 0;
+    }
+
+    .navbar-actions {
+        display: none;
+        position: absolute;
+        top: 58px;
+        right: 15px;
+        left: 15px;
+        background: #fff;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        border: 1px solid #eee;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+    }
+
+    .navbar-actions.open {
+        display: flex;
+    }
+
+    .navbar-actions .login-btn,
+    .navbar-actions .signup-btn,
+    .navbar-actions form {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-actions .login-btn,
+    .navbar-actions .signup-btn {
+        display: block;
+    }
+
+    .navbar-actions form button.login-btn {
+        width: 100%;
+    }
+
     .navbar-search {
         display: none;
     }

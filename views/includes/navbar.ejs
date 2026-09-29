@@ -29,7 +29,11 @@
 
             </form>
 
-            <div class="navbar-actions">
+            <button type="button" class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+                <i class="bi bi-list" id="mobileNavIcon"></i>
+            </button>
+
+            <div class="navbar-actions" id="navbarActions">
 
                 <a href="/items/new" class="nav-report">
                     Report Item
@@ -60,6 +64,25 @@
         </div>
     </div>
 </nav>
+
+<script>
+    const mobileNavToggle = document.getElementById("mobileNavToggle");
+    const navbarActions = document.getElementById("navbarActions");
+    const mobileNavIcon = document.getElementById("mobileNavIcon");
+
+    if (mobileNavToggle && navbarActions && mobileNavIcon) {
+        mobileNavToggle.addEventListener("click", () => {
+            const isOpen = navbarActions.classList.toggle("open");
+            if (isOpen) {
+                mobileNavIcon.classList.remove("bi-list");
+                mobileNavIcon.classList.add("bi-x-lg");
+            } else {
+                mobileNavIcon.classList.remove("bi-x-lg");
+                mobileNavIcon.classList.add("bi-list");
+            }
+        });
+    }
+</script>
 
 
 <% if (page !== "signup" && page !== "login") { %>
