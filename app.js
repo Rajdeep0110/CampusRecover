@@ -63,6 +63,12 @@ app.use("/", homeRouter);
 app.use("/items", itemsRouter);
 app.use("/", authRouter);
 
+// Global Error Handler Middleware
+app.use((err, req, res, next) => {
+    console.error("❌ Unhandled Application Error:", err);
+    res.status(500).send("Internal Server Error: " + (err.message || "An unexpected error occurred."));
+});
+
 // Database Connection
 if (mongoUrl) {
     mongoose

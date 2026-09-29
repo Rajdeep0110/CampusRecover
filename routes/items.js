@@ -21,6 +21,34 @@ const handleUpload = (req, res, next) => {
     });
 };
 
+// Middleware to check if user is logged in
+const isLoggedIn = (req, res, next) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+    next();
+};
+
+// Middleware to check if current logged in user is the owner of the item
+const isOwner = async (req, res, next) => {
+    try {
+        if (!req.session.user) {
+            return res.redirect("/login");
+        }
+        const item = await Item.findById(req.params.id);
+        if (!item) {
+            return res.status(404).send("Item not found");
+        }
+        if (!item.owner || item.owner.toString() !== req.session.user._id.toString()) {
+            return res.status(403).send("You do not have permission to modify this item.");
+        }
+        next();
+    } catch (err) {
+        console.error("Authorization check error:", err);
+        res.status(500).send("Error verifying permissions");
+    }
+};
+
 
 // ===============================
 // GET ALL ITEMS + SEARCH/FILTER
@@ -60,7 +88,7 @@ router.get("/", async (req, res) => {
 // ===============================
 // SHOW NEW ITEM FORM
 // ===============================
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
     res.render("items/new.ejs", {
         error: null,
         formData: {},
@@ -72,7 +100,7 @@ router.get("/new", (req, res) => {
 // ===============================
 // CREATE NEW ITEM
 // ===============================
-router.post("/", handleUpload, async (req, res) => {
+router.post("/", isLoggedIn, handleUpload, async (req, res) => {
     try {
         if (req.uploadError) {
             return res.status(400).render("items/new.ejs", {
@@ -96,7 +124,8 @@ router.post("/", handleUpload, async (req, res) => {
 
         const newItem = new Item({
             ...req.body,
-            image: imageUrl
+            image: imageUrl,
+            owner: req.session.user._id
         });
 
         await newItem.save();
@@ -116,7 +145,7 @@ router.post("/", handleUpload, async (req, res) => {
 // ===============================
 // SHOW EDIT FORM
 // ===============================
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isOwner, async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
 
@@ -140,7 +169,7 @@ router.get("/:id/edit", async (req, res) => {
 // ===============================
 // UPDATE ITEM
 // ===============================
-router.post("/:id/update", handleUpload, async (req, res) => {
+router.post("/:id/update", isLoggedIn, isOwner, handleUpload, async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
         if (!item) {
@@ -197,7 +226,7 @@ router.post("/:id/update", handleUpload, async (req, res) => {
 // ===============================
 // DELETE ITEM
 // ===============================
-router.post("/:id/delete", async (req, res) => {
+router.post("/:id/delete", isLoggedIn, isOwner, async (req, res) => {
     try {
         const item = await Item.findByIdAndDelete(req.params.id);
 
@@ -218,7 +247,7 @@ router.post("/:id/delete", async (req, res) => {
 // ===============================
 router.get("/:id", async (req, res) => {
 
-    const item = await Item.findById(req.params.id);
+    const item = await Item.findById(req.params.id).populate("owner");
 
     if (!item) {
         return res.status(404).send("Item not found");

@@ -33,6 +33,11 @@ const itemSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: true
+    },
+
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     }
 }, {
     timestamps: true
