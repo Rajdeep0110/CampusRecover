@@ -20,6 +20,19 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+
+    verificationOTP: {
+        type: String
+    },
+
+    verificationOTPExpires: {
+        type: Date
+    },
+
     resetToken: {
         type: String
     },

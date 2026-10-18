@@ -7,74 +7,134 @@
             <div class="signup-heading">
                 <p class="signup-eyebrow">JOIN OUR STUDENT COMMUNITY</p>
 
-                <h1>
-                    Create Your Account<br>
-                    <span>Start Making a Safer Campus</span>
-                </h1>
+                <% if (typeof step !== "undefined" && step === "details") { %>
+                    <h1>
+                        Complete Your Account<br>
+                        <span>Set Up Your Profile</span>
+                    </h1>
 
-                <p class="signup-description">
-                    Sign up to report, search, and help fellow students recover lost and found
-                    items across your campus.
-                </p>
+                    <p class="signup-description">
+                        Your email address has been verified! Choose your username and password
+                        to complete your CampusRecover account.
+                    </p>
+                <% } else { %>
+                    <h1>
+                        Create Your Account<br>
+                        <span>Start Making a Safer Campus</span>
+                    </h1>
+
+                    <p class="signup-description">
+                        Sign up to report, search, and help fellow students recover lost and found
+                        items across your campus.
+                    </p>
+                <% } %>
             </div>
 
-            <form action="/signup" method="POST" class="signup-form">
-
-                <div class="signup-field">
-                    <label for="name">Username</label>
-
-                    <div class="signup-input">
-                        <i class="bi bi-person"></i>
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your username"
-                            required
-                        >
-                    </div>
+            <% if (typeof error !== "undefined" && error) { %>
+                <div class="login-error" style="color: #ff3333; margin-bottom: 15px; font-size: 15px;">
+                    <%= error %>
                 </div>
+            <% } %>
 
-                <div class="signup-field">
-                    <label for="email">Email</label>
+            <% if (typeof step !== "undefined" && step === "details") { %>
+                <!-- STEP 2: DETAILS (Only accessible after OTP has been successfully verified) -->
+                <form action="/signup" method="POST" class="signup-form">
 
-                    <div class="signup-input">
-                        <i class="bi bi-envelope"></i>
+                    <div class="signup-field">
+                        <label for="email">
+                            Email
+                            <span style="color: #16a34a; font-size: 13px; font-weight: 600; margin-left: 6px;">
+                                <i class="bi bi-patch-check-fill"></i> Verified
+                            </span>
+                        </label>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Enter your email"
-                            required
-                        >
+                        <div class="signup-input" style="background: #f1f5f9;">
+                            <i class="bi bi-envelope-check" style="color: #16a34a;"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="<%= typeof verifiedEmail !== 'undefined' ? verifiedEmail : '' %>"
+                                readonly
+                                style="color: #475569; cursor: not-allowed;"
+                                required
+                            >
+                        </div>
+
+                        <div style="margin-top: 6px; font-size: 13px;">
+                            <a href="/signup?reset=true" style="color: #64748b; text-decoration: none;">Use a different email</a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="signup-field">
-                    <label for="password">Password</label>
+                    <div class="signup-field">
+                        <label for="name">Username</label>
 
-                    <div class="signup-input">
-                        <i class="bi bi-lock"></i>
+                        <div class="signup-input">
+                            <i class="bi bi-person"></i>
 
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Create a password"
-                            required
-                        >
-
-                        <i class="bi bi-eye"></i>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your username"
+                                required
+                                autofocus
+                            >
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" class="signup-submit">
-                    Sign Up <span>→</span>
-                </button>
+                    <div class="signup-field">
+                        <label for="password">Password</label>
 
-            </form>
+                        <div class="signup-input">
+                            <i class="bi bi-lock"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                required
+                            >
+
+                            <i class="bi bi-eye toggle-password" style="cursor: pointer;"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="signup-submit">
+                        Complete Sign Up <span>→</span>
+                    </button>
+
+                </form>
+            <% } else { %>
+                <!-- STEP 1: EMAIL (Enter Gmail to receive verification OTP) -->
+                <form action="/signup" method="POST" class="signup-form">
+
+                    <div class="signup-field">
+                        <label for="email">Email</label>
+
+                        <div class="signup-input">
+                            <i class="bi bi-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="<%= typeof email !== 'undefined' ? email : '' %>"
+                                placeholder="Enter your email"
+                                required
+                                autofocus
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="signup-submit">
+                        Send Verification Code <span>→</span>
+                    </button>
+
+                </form>
+            <% } %>
 
             <p class="signup-login">
                 Already have an account?
@@ -129,3 +189,22 @@
     </div>
 
 </div>
+
+<script>
+    document.querySelectorAll(".toggle-password").forEach(function(icon) {
+        icon.addEventListener("click", function() {
+            var input = this.parentElement.querySelector("input[name='password']");
+            if (input) {
+                if (input.type === "password") {
+                    input.type = "text";
+                    this.classList.remove("bi-eye");
+                    this.classList.add("bi-eye-slash");
+                } else {
+                    input.type = "password";
+                    this.classList.remove("bi-eye-slash");
+                    this.classList.add("bi-eye");
+                }
+            }
+        });
+    });
+</script>

@@ -80,6 +80,10 @@ if (mongoUrl) {
 }
 
 // Start Server immediately so Render health checks pass and no 502 Bad Gateway occurs
-app.listen(port, "0.0.0.0", () => {
-    console.log(`🚀 Server is running on port ${port}`);
-});
+if (require.main === module) {
+    app.listen(port, "0.0.0.0", () => {
+        console.log(`🚀 Server is running on port ${port}`);
+    });
+}
+
+module.exports = app;

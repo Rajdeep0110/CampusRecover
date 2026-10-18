@@ -1,0 +1,181 @@
+<div class="forgot-page">
+
+    <div class="forgot-container">
+
+        <!-- LEFT SIDE -->
+        <div class="forgot-content">
+
+            <div class="forgot-topbar">
+
+                <a href="/items" class="forgot-brand">
+                    <span class="forgot-brand-icon">
+                        <i class="bi bi-backpack-fill"></i>
+                    </span>
+
+                    <span>
+                        Campus<span>Recover</span>
+                    </span>
+                </a>
+
+                <a href="/items" class="forgot-home-link">
+                    <i class="bi bi-house"></i>
+                    Back to Home
+                </a>
+
+            </div>
+
+
+            <div class="forgot-form-section">
+
+                <div class="forgot-eyebrow">
+                    EMAIL VERIFICATION
+                </div>
+
+                <h1>
+                    Verify Your
+                    <span>Email Address</span>
+                </h1>
+
+                <p class="forgot-description">
+                    We sent a 6-digit verification code (OTP) to your Gmail address.
+                    Enter the code below to verify your email and complete your registration.
+                </p>
+
+                <% if (typeof error !== "undefined" && error) { %>
+                    <div class="login-error" style="color: #ff3333; margin-bottom: 15px; font-size: 15px;">
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <% if (typeof success !== "undefined" && success) { %>
+                    <div class="login-success" style="color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px 14px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; font-weight: 500;">
+                        <%= success %>
+                    </div>
+                <% } %>
+
+                <form action="/verify-email" method="POST" class="forgot-form">
+
+                    <div class="forgot-field">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <div class="forgot-input">
+
+                            <i class="bi bi-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="<%= typeof email !== 'undefined' ? email : '' %>"
+                                placeholder="Enter your email address"
+                                readonly
+                                style="background: #f1f5f9; cursor: not-allowed;"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="forgot-field">
+
+                        <label for="otp">
+                            Verification Code (OTP)
+                        </label>
+
+                        <div class="forgot-input">
+
+                            <i class="bi bi-shield-lock"></i>
+
+                            <input
+                                type="text"
+                                id="otp"
+                                name="otp"
+                                placeholder="Enter 6-digit OTP"
+                                maxlength="6"
+                                pattern="[0-9]{6}"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
+                                required
+                                autofocus
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="forgot-submit">
+                        Verify Code
+                        <span>→</span>
+                    </button>
+
+                </form>
+
+                <div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <form action="/resend-otp" method="POST" style="display: inline;">
+                        <input
+                            type="hidden"
+                            name="email"
+                            value="<%= typeof email !== 'undefined' ? email : '' %>"
+                        >
+                        <button
+                            type="submit"
+                            style="background: none; border: none; padding: 0; color: #216cff; font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: underline;"
+                        >
+                            Didn't receive the OTP? Resend Code
+                        </button>
+                    </form>
+
+                    <a href="/signup?reset=true" style="color: #64748b; font-size: 14px; text-decoration: underline;">
+                        Use different email
+                    </a>
+                </div>
+
+                <div class="forgot-divider">
+                    <span></span>
+                    <strong>OR</strong>
+                    <span></span>
+                </div>
+
+                <a href="/login" class="forgot-login">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Login
+                </a>
+
+                <div class="forgot-tip">
+
+                    <div class="forgot-tip-icon">
+                        <i class="bi bi-lightbulb-fill"></i>
+                    </div>
+
+                    <div>
+                        <strong>Tip:</strong>
+                        Check your Spam or Junk folder if you don't see the email within a couple of minutes. The code expires in 10 minutes.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="forgot-visual">
+
+            <div class="forgot-image">
+
+                <img
+                    src="/images/forgot-password-campus.jpg"
+                    alt="CampusRecover email verification"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
