@@ -9,9 +9,12 @@ const router = express.Router();
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
+        user: (process.env.EMAIL_USER || "").trim(),
+        pass: (process.env.EMAIL_PASS || "").replace(/\s+/g, "")
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000
 });
 
 // Signup page
@@ -107,33 +110,47 @@ router.post("/signup", async (req, res) => {
         }
 
         // Flow Step 1: User enters Gmail address to initiate signup and receive OTP
+        const isJson = req.xhr || (req.headers.accept && req.headers.accept.includes("application/json")) || (req.is && req.is("json"));
+
         if (!normalizedEmail) {
+            const errorMsg = "Please enter your email address.";
+            if (isJson) {
+                return res.status(400).json({ success: false, error: errorMsg });
+            }
             return res.render("auth/signup", {
                 page: "signup",
                 step: "email",
                 email: "",
-                error: "Please enter your email address."
+                error: errorMsg
             });
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(normalizedEmail)) {
+            const errorMsg = "Please enter a valid email address.";
+            if (isJson) {
+                return res.status(400).json({ success: false, error: errorMsg });
+            }
             return res.render("auth/signup", {
                 page: "signup",
                 step: "email",
                 email: normalizedEmail,
-                error: "Please enter a valid email address."
+                error: errorMsg
             });
         }
 
         // Check if user is already registered
         const existingUser = await User.findOne({ email: normalizedEmail });
         if (existingUser && existingUser.isEmailVerified !== false) {
+            const errorMsg = "This email address is already registered. Please log in.";
+            if (isJson) {
+                return res.status(400).json({ success: false, error: errorMsg });
+            }
             return res.render("auth/signup", {
                 page: "signup",
                 step: "email",
                 email: normalizedEmail,
-                error: "This email address is already registered. Please log in."
+                error: errorMsg
             });
         }
 
@@ -154,7 +171,7 @@ router.post("/signup", async (req, res) => {
 
         try {
             await transporter.sendMail({
-                from: process.env.EMAIL_USER,
+                from: (process.env.EMAIL_USER || "").trim(),
                 to: normalizedEmail,
                 subject: "Verify Your CampusRecover Account",
                 html: `
@@ -185,21 +202,34 @@ router.post("/signup", async (req, res) => {
             });
         } catch (mailError) {
             console.error("Nodemailer send error:", mailError);
+            delete req.session.pendingSignup;
+            const errorMsg = "Unable to send verification email. Please check your email address and try again.";
+            if (isJson) {
+                return res.status(500).json({ success: false, error: errorMsg });
+            }
             return res.render("auth/signup", {
                 page: "signup",
                 step: "email",
                 email: normalizedEmail,
-                error: "Unable to send verification email. Please check your email address and try again."
+                error: errorMsg
             });
         }
 
         req.session.save((err) => {
             if (err) console.error("Session save error:", err);
-            res.redirect(`/verify-email?email=${encodeURIComponent(normalizedEmail)}`);
+            const redirectUrl = `/verify-email?email=${encodeURIComponent(normalizedEmail)}`;
+            if (isJson) {
+                return res.json({ success: true, redirectUrl: redirectUrl });
+            }
+            res.redirect(redirectUrl);
         });
 
     } catch (error) {
         console.error("Signup error:", error);
+        const isJson = req.xhr || (req.headers.accept && req.headers.accept.includes("application/json")) || (req.is && req.is("json"));
+        if (isJson) {
+            return res.status(500).json({ success: false, error: "Something went wrong. Please try again." });
+        }
         res.status(500).send("Something went wrong.");
     }
 });
@@ -323,7 +353,7 @@ router.post("/resend-otp", async (req, res) => {
 
         try {
             await transporter.sendMail({
-                from: process.env.EMAIL_USER,
+                from: (process.env.EMAIL_USER || "").trim(),
                 to: normalizedEmail,
                 subject: "Your New CampusRecover Verification OTP",
                 html: `

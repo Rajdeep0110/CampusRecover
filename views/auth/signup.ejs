@@ -207,4 +207,75 @@
             }
         });
     });
+
+    // Step 1: Manage verification code submit and loading state
+    (function() {
+        var emailForm = document.querySelector(".signup-form");
+        if (!emailForm) return;
+
+        var submitBtn = emailForm.querySelector(".signup-submit");
+        var emailInput = emailForm.querySelector("input[name='email']");
+        var passwordInput = emailForm.querySelector("input[name='password']");
+
+        // Only handle Step 1 (email entry), not Step 2 (account details completion)
+        if (submitBtn && emailInput && !passwordInput) {
+            emailForm.addEventListener("submit", async function(e) {
+                e.preventDefault();
+
+                var originalBtnHtml = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.75";
+                submitBtn.style.cursor = "not-allowed";
+                submitBtn.innerHTML = 'Sending Code... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="width: 1rem; height: 1rem; border-width: 0.15em; margin-left: 6px; vertical-align: middle;"></span>';
+
+                var errorBox = document.querySelector(".login-error");
+                if (errorBox) {
+                    errorBox.style.display = "none";
+                }
+
+                function resetButton() {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = "";
+                    submitBtn.style.cursor = "pointer";
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+
+                function showError(msg) {
+                    if (!errorBox) {
+                        errorBox = document.createElement("div");
+                        errorBox.className = "login-error";
+                        errorBox.style.cssText = "color: #ff3333; margin-bottom: 15px; font-size: 15px;";
+                        emailForm.parentNode.insertBefore(errorBox, emailForm);
+                    }
+                    errorBox.textContent = msg;
+                    errorBox.style.display = "block";
+                }
+
+                try {
+                    var formData = new URLSearchParams(new FormData(emailForm));
+                    var response = await fetch("/signup", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: formData.toString()
+                    });
+
+                    var data = await response.json().catch(function() { return null; });
+
+                    if (response.ok && data && data.success && data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        var message = (data && data.error) ? data.error : "Unable to send verification email. Please check your email address and try again.";
+                        showError(message);
+                        resetButton();
+                    }
+                } catch (err) {
+                    showError("Unable to connect to the server. Please check your internet connection and try again.");
+                    resetButton();
+                }
+            });
+        }
+    })();
 </script>
