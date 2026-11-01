@@ -1,21 +1,12 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const User = require("../models/user");
 
 const router = express.Router();
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: (process.env.EMAIL_USER || "").trim(),
-        pass: (process.env.EMAIL_PASS || "").replace(/\s+/g, "")
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000
-});
+const resend = new Resend(process.env.RESEND_API_KEY || "missing_resend_api_key");
 
 // Signup page
 router.get("/signup", (req, res) => {
@@ -170,8 +161,8 @@ router.post("/signup", async (req, res) => {
         };
 
         try {
-            await transporter.sendMail({
-                from: (process.env.EMAIL_USER || "").trim(),
+            const { error: resendError } = await resend.emails.send({
+                from: process.env.EMAIL_FROM || "onboarding@resend.dev",
                 to: normalizedEmail,
                 subject: "Verify Your CampusRecover Account",
                 html: `
@@ -200,8 +191,12 @@ router.post("/signup", async (req, res) => {
                     </div>
                 `
             });
+
+            if (resendError) {
+                throw new Error(resendError.message || "Failed to send verification email via Resend");
+            }
         } catch (mailError) {
-            console.error("Nodemailer send error:", mailError);
+            console.error("Resend send error:", mailError);
             delete req.session.pendingSignup;
             const errorMsg = "Unable to send verification email. Please check your email address and try again.";
             if (isJson) {
@@ -352,8 +347,8 @@ router.post("/resend-otp", async (req, res) => {
         };
 
         try {
-            await transporter.sendMail({
-                from: (process.env.EMAIL_USER || "").trim(),
+            const { error: resendError } = await resend.emails.send({
+                from: process.env.EMAIL_FROM || "onboarding@resend.dev",
                 to: normalizedEmail,
                 subject: "Your New CampusRecover Verification OTP",
                 html: `
@@ -381,6 +376,10 @@ router.post("/resend-otp", async (req, res) => {
                     </div>
                 `
             });
+
+            if (resendError) {
+                throw new Error(resendError.message || "Failed to resend OTP via Resend");
+            }
         } catch (mailError) {
             console.error("Resend mail error:", mailError);
             return res.render("auth/verify-email", {
@@ -494,8 +493,8 @@ router.post("/forgot-password", async (req, res) => {
         const resetLink =
             `http://localhost:8080/reset-password/${resetToken}`;
 
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        const { error: resendError } = await resend.emails.send({
+            from: process.env.EMAIL_FROM || "onboarding@resend.dev",
             to: user.email,
             subject: "Reset Your CampusRecover Password",
 
@@ -550,6 +549,10 @@ router.post("/forgot-password", async (req, res) => {
                 </div>
             `
         });
+
+        if (resendError) {
+            throw new Error(resendError.message || "Failed to send reset email via Resend");
+        }
 
         res.send("Password reset link sent successfully.");
 
